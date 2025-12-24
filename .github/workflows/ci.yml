@@ -40,4 +40,5 @@ jobs:
       - name: Run Ruff linter
         uses: astral-sh/ruff-action@v3
         with:
-          args: "check --config ruff.toml --output-format=github ."
+          args: "check --config ruff.toml --output-format=github"
+          src: "./src"
