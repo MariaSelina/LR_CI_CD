@@ -25,5 +25,5 @@ def test_drive_ok(car):
 
 
 def test_drive_not_enough_fuel(car):
-    with pytest.raises(Exception, match=r"Не доедем жеж\.\.\."):
+    with pytest.raises(Exception, match=r"Не доедем жеж..."):
         car.drive(100)
