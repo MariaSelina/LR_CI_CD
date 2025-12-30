@@ -1,41 +1,22 @@
-from __future__ import annotations
-
-from typing import Self
-
-
-class FuelOverflowError(Exception):
-    MESSAGE = "Вы пытаетесь залить слишком много бензина!"
-
-    def __init__(self: Self) -> None:
-        super().__init__(self.MESSAGE)
-
-
-class InsufficientFuelError(Exception):
-    MESSAGE = "Не доедем жеж..."
-
-    def __init__(self: Self) -> None:
-        super().__init__(self.MESSAGE)
-
-
 class Car:
-    def __init__(self: Self, model: str, fuel_capacity: float) -> None:
+    def __init__(self, model: str, fuel_capacity: float) -> None:
         self._model = model
-        self._max_fuel_capacity = float(fuel_capacity)
-        self._fuel_in_tank = 0.0
+        self._max_fuel_capacity: float = fuel_capacity
+        self._fuel_in_tank: float = 0
 
-    def get_current_fuel_level(self: Self) -> float:
+    def get_current_fuel_level(self) -> float:
         return self._fuel_in_tank
 
-    def refuel_car(self: Self, fuel_quantity: float) -> None:
+    def refuel_car(self, fuel_quantity: float):
         if self._max_fuel_capacity - self._fuel_in_tank < fuel_quantity:
-            raise FuelOverflowError from None
+            raise Exception("Вы пытаетесь залить слишком много бензина!")
         self._fuel_in_tank += fuel_quantity
 
-    def drive(self: Self, distance_km: float) -> float:
-        fuel_burned: float = 8.0 * (distance_km / 100.0)
-
+    def drive(self, distance_km: float):
+        # Считаем, что расход 8 литров на 100 км
+        fuel_burned: int = 8 * (distance_km / 100)
+        # TODO: Вася, не забудь расскомментировать! Клиенты могут застрять!!11
         if self._fuel_in_tank < fuel_burned:
-            raise InsufficientFuelError from None
-
+            raise Exception("Не доедем жеж...")
         self._fuel_in_tank -= fuel_burned
         return self.get_current_fuel_level()
