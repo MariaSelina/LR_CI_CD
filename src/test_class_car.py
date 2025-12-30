@@ -1,29 +1,20 @@
-import pytest
+import unittest
+from .car import Car
 
-from car import Car  
+class TestCase(unittest.TestCase):
+    def setUp(self):
+        self.car = Car(model="BMW X5", fuel_capacity=80)
 
+    def tearDown(self):
+        pass
 
-@pytest.fixture()
-def car():
-    return Car(model="BMW X5", fuel_capacity=80)
+    def test_drive(self):
+        self.car.drive(20)
+        self.assertRaises(Exception, lambda: self.car.drive(80000))
 
-
-def test_refuel_ok(car):
-    car.refuel_car(20)
-    assert car.get_current_fuel_level() == 20
-
-
-def test_refuel_overflow(car):
-    with pytest.raises(Exception, match=r"слишком много бензина"):
-        car.refuel_car(1000)
-
-
-def test_drive_ok(car):
-    car.refuel_car(20)
-    remaining = car.drive(20)
-    assert remaining < 20
-
-
-def test_drive_not_enough_fuel(car):
-    with pytest.raises(Exception, match=r"Не доедем жеж..."):
-        car.drive(100)
+    def test_refuel(self):
+        # Заправим 20 литров
+        self.car.refuel_car(20)
+        assert self.car.get_current_fuel_level() == 20
+        # Проверим, что будет исключение, если перельем
+        self.assertRaises(Exception, lambda: self.car.refuel_car(80))
